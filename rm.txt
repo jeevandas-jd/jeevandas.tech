@@ -1,0 +1,19 @@
+{
+    id: "gym",
+    heading: "gym",
+    lines: [
+      "since 2024 I haven't missed a day.",
+      "I don't fully know why.",
+      "",
+      "after every rep I feel better than before.",
+      "better than yesterday.",
+      "it's not about how I look.",
+      "it's about the process.",
+      "I'm obsessed with the process.",
+      "",
+      "no dream physique.",
+      "no aesthetic goal.",
+      "just show up. every day.",
+      "that's enough.",
+    ]
+  }

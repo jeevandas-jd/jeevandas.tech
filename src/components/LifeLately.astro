@@ -1,0 +1,96 @@
+---
+// LifeLately.astro
+const blocks = [
+  {
+    id: "currently",
+    heading: "currently",
+    lines: [
+      "Doomscrolling",
+      "reading books.",
+      "solving DSA",
+      "going to the gym. every single day.",
+    ]
+  },
+  {
+    id: "world",
+    heading: "POV.",
+    lines: [
+      "everything around me is fine.",
+      "it's me I'm still figuring out.",
+      "every day I push myself to fit-",
+      "not to the world, but to who I want to be.",
+      "doing it anyway.",
+    ]
+  }
+  ,
+];
+---
+
+<section id="life">
+  <div class="container">
+    <p class="label faint hand">life, lately</p>
+    <span class="rule"></span>
+
+    <div class="blocks">
+      {blocks.map((b) => (
+        <div class="life-block" id={b.id}>
+          <p class="block-heading hand">{b.heading}</p>
+          <div class="block-rule"></div>
+          <div class="block-lines">
+            {b.lines.map((line) =>
+              line === ""
+                ? <br />
+                : <p class="block-line soft">{line}</p>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .label {
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.4rem;
+  }
+
+  .blocks {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .life-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .block-heading {
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    text-transform: lowercase;
+  }
+
+  .block-rule {
+    width: 100%;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .block-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    padding-top: 0.4rem;
+  }
+
+  .block-line {
+    font-size: clamp(1rem, 2.2vw, 1.15rem);
+    line-height: 1.9;
+  }
+</style>

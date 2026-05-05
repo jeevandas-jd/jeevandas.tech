@@ -1,0 +1,88 @@
+---
+// Blog.astro — gateway, placeholder posts
+const posts = [
+  {
+    slug: "on-showing-up",
+    title: "on showing up",
+    date: "soon",
+    teaser: "why consistency beats motivation every time."
+  },
+  {
+    slug: "learning-in-public",
+    title: "learning in public",
+    date: "soon",
+    teaser: "what happens when you build things before you're ready."
+  },
+];
+---
+
+<section id="blog">
+  <div class="container">
+    <p class="label faint hand">blogs</p>
+    <span class="rule"></span>
+
+    <div class="post-list">
+      {posts.map((p) => (
+        <article class="post-row">
+          <div class="post-meta">
+            <span class="post-date faint hand">{p.date}</span>
+          </div>
+          <div class="post-body">
+            <h3 class="post-title">
+              <a href={`/blog/${p.slug}`}>{p.title}</a>
+            </h3>
+            <p class="post-teaser soft">{p.teaser}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .label {
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.4rem;
+  }
+
+  .post-list {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 1.5rem;
+    padding-block: 1.6rem;
+    border-bottom: 1px solid var(--rule);
+    align-items: start;
+  }
+
+  .post-date {
+    font-size: 0.85rem;
+    padding-top: 0.25rem;
+  }
+
+  .post-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  .post-title a {
+    text-decoration: none;
+  }
+
+  .post-title a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .post-teaser {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+</style>

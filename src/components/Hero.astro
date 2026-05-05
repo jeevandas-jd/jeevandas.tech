@@ -1,0 +1,354 @@
+---
+// Hero.astro — fullscreen entry experience
+---
+
+<section id="hero">
+  <!-- Doodle canvas (hand-drawn decorative elements) -->
+  <canvas id="doodle-canvas" aria-hidden="true"></canvas>
+
+  <!-- Chat dialog -->
+  <div class="chat-wrap" id="chat-wrap" aria-live="polite">
+    <div class="chat-lines" id="chat-lines"></div>
+    <div class="chat-cursor" id="chat-cursor" aria-hidden="true"></div>
+  </div>
+
+  <!-- Enter button — hidden until all lines typed -->
+  <div class="enter-wrap" id="enter-wrap">
+    <button class="btn enter-btn" id="enter-btn" aria-label="Enter the site">
+      [ enter ]
+    </button>
+  </div>
+</section>
+
+<style>
+  #hero {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg);
+    background-image: radial-gradient(circle, #c8c6be 1px, transparent 1px);
+    background-size: 28px 28px;
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  #hero.exiting {
+    opacity: 0;
+    transform: translateY(-12px);
+    pointer-events: none;
+  }
+
+  /* ── doodle canvas ───────────────────────────────────── */
+  #doodle-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  /* ── chat area ───────────────────────────────────────── */
+  .chat-wrap {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-height: 11rem;
+    justify-content: flex-end;
+  }
+
+  .chat-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .chat-line {
+    font-family: var(--font-hand);
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    color: var(--ink);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+
+  .chat-line.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* blinking cursor */
+  .chat-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.8rem;
+    background: var(--ink);
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: blink 0.85s step-end infinite;
+  }
+
+  .chat-cursor.hidden { opacity: 0; }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* ── enter button ────────────────────────────────────── */
+  .enter-wrap {
+    position: relative;
+    z-index: 1;
+    margin-top: 2.5rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none;
+  }
+
+  .enter-wrap.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .enter-btn {
+    font-size: 1.3rem;
+    letter-spacing: 0.08em;
+  }
+
+  .enter-btn:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 4px;
+  }
+</style>
+
+<script>
+  // ── config ─────────────────────────────────────────────
+  const LINES = [
+    "hello there...",
+    "I am Jeevandas",
+    "happy you made it here",
+    "this is my little corner of the internet",
+    "wander around, take your time",
+  ];
+
+  const CHAR_SPEED   = 48;   // ms per character
+  const LINE_PAUSE   = 420;  // ms pause between lines
+  const ENTER_DELAY  = 600;  // ms after last line before button appears
+
+  // ── doodle canvas ───────────────────────────────────────
+  function initDoodles() {
+    const canvas = document.getElementById('doodle-canvas');
+    const ctx    = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+      draw();
+    }
+
+    function rand(min, max) { return Math.random() * (max - min) + min; }
+
+    function wobbleLine(ctx, x1, y1, x2, y2, wobble = 3) {
+      const steps = 12;
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      for (let i = 1; i <= steps; i++) {
+        const t  = i / steps;
+        const x  = x1 + (x2 - x1) * t + rand(-wobble, wobble);
+        const y  = y1 + (y2 - y1) * t + rand(-wobble, wobble);
+        ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+
+    function drawStar(ctx, cx, cy, r) {
+      for (let i = 0; i < 4; i++) {
+        const angle = (i * Math.PI) / 4;
+        wobbleLine(ctx,
+          cx + Math.cos(angle) * r, cy + Math.sin(angle) * r,
+          cx - Math.cos(angle) * r, cy - Math.sin(angle) * r,
+          2
+        );
+      }
+    }
+
+    function drawCircle(ctx, cx, cy, r) {
+      const steps = 36;
+      ctx.beginPath();
+      for (let i = 0; i <= steps; i++) {
+        const a  = (i / steps) * Math.PI * 2;
+        const rr = r + rand(-3, 3);
+        const x  = cx + Math.cos(a) * rr;
+        const y  = cy + Math.sin(a) * rr;
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.stroke();
+    }
+
+    function drawArrow(ctx, x, y, len, angle) {
+      const ex = x + Math.cos(angle) * len;
+      const ey = y + Math.sin(angle) * len;
+      wobbleLine(ctx, x, y, ex, ey);
+      const headLen = 12;
+      const headAngle = 0.45;
+      wobbleLine(ctx, ex, ey,
+        ex - Math.cos(angle - headAngle) * headLen,
+        ey - Math.sin(angle - headAngle) * headLen, 1);
+      wobbleLine(ctx, ex, ey,
+        ex - Math.cos(angle + headAngle) * headLen,
+        ey - Math.sin(angle + headAngle) * headLen, 1);
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = 'rgba(26,26,24,0.13)';
+      ctx.lineWidth   = 1.5;
+      ctx.lineCap     = 'round';
+
+      const W = canvas.width;
+      const H = canvas.height;
+
+      // corners & edges — scattered doodles
+      const doodles = [
+        () => drawStar(ctx, rand(40,120),  rand(40,120),  rand(14,22)),
+        () => drawStar(ctx, W-rand(40,120), rand(40,120), rand(14,22)),
+        () => drawStar(ctx, rand(40,120),  H-rand(40,120), rand(14,22)),
+        () => drawStar(ctx, W-rand(40,120), H-rand(40,120), rand(14,22)),
+        () => drawCircle(ctx, rand(60,180),  rand(60,180),  rand(16,28)),
+        () => drawCircle(ctx, W-rand(60,180), H-rand(60,180), rand(16,28)),
+        () => drawArrow(ctx, rand(30,100), H/2+rand(-60,60), rand(50,90), 0),
+        () => drawArrow(ctx, W-rand(30,100), H/2+rand(-60,60), rand(50,90), Math.PI),
+        // small random stars scattered
+        ...Array.from({length: 6}, () => () =>
+          drawStar(ctx, rand(0, W), rand(0, H), rand(6,12))
+        ),
+        // wavy underline near bottom
+        () => {
+          ctx.beginPath();
+          const y0 = H - rand(60,100);
+          for (let x = rand(40,80); x < W - 40; x += 8) {
+            const y = y0 + Math.sin(x * 0.05) * 6 + rand(-2, 2);
+            x < 81 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+      ];
+
+      doodles.forEach(fn => fn());
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+  }
+
+  // ── typewriter ──────────────────────────────────────────
+  async function sleep(ms) {
+    return new Promise(r => setTimeout(r, ms));
+  }
+
+  async function typeLines() {
+    const container = document.getElementById('chat-lines');
+    const cursor    = document.getElementById('chat-cursor');
+
+    for (let i = 0; i < LINES.length; i++) {
+      const line = LINES[i];
+
+      // create a new line element (empty)
+      const el = document.createElement('div');
+      el.className = 'chat-line';
+      el.setAttribute('aria-label', line);
+      container.appendChild(el);
+
+      // slight delay then fade in
+      await sleep(60);
+      el.classList.add('visible');
+
+      // type characters
+      for (const char of line) {
+        el.textContent += char;
+        await sleep(CHAR_SPEED);
+      }
+
+      if (i < LINES.length - 1) await sleep(LINE_PAUSE);
+    }
+
+    // hide cursor, show enter button
+    cursor.classList.add('hidden');
+    await sleep(ENTER_DELAY);
+
+    const enterWrap = document.getElementById('enter-wrap');
+    enterWrap.classList.add('visible');
+  }
+
+  // ── enter ───────────────────────────────────────────────
+  function initEnter() {
+    const btn  = document.getElementById('enter-btn');
+    const hero = document.getElementById('hero');
+
+    function enter() {
+      hero.classList.add('exiting');
+      setTimeout(() => {
+        hero.style.display = 'none';
+        document.body.style.overflow = '';
+        // scroll to about
+        document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+      }, 720);
+    }
+
+    btn.addEventListener('click', enter);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && document.getElementById('enter-wrap').classList.contains('visible')) {
+        enter();
+      }
+    });
+  }
+
+  // ── boot ────────────────────────────────────────────────
+
+// ── boot ────────────────────────────────────────────────
+document.body.style.overflow = 'hidden';
+initDoodles();
+initEnter();
+
+// ── personalized greeting ────────────────────────────────
+async function checkGreeting() {
+  const token = localStorage.getItem('_jd_tok');
+  if (!token) return null;
+
+  try {
+    const res = await fetch('https://jiylkkzhrnqcjfhnoqkv.supabase.co/functions/v1/greet', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'omit',
+      body: JSON.stringify({ token }),
+    });
+    const { name } = await res.json();
+    return name || null;
+  } catch {
+    return null;
+  }
+}
+
+// check for personalized greeting, then start typing
+checkGreeting().then((name) => {
+  if (name) {
+    // swap lines with personalized version
+    LINES.length = 0;
+    LINES.push(
+      `heyy ${name}...`,
+      `welcome back`,
+      `glad you're here again`,
+      `wander around, take your time`,
+    );
+  }
+  // small delay before typing starts (let doodles render)
+  setTimeout(typeLines, 500);
+});
+</script>

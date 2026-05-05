@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+
+/* ── tokens ─────────────────────────────────────────── */
+:root {
+  --bg: #faf9f6;
+  --ink: #1a1a18;
+  --ink-soft: #4a4a46;
+  --ink-faint: #9a9a94;
+  --accent: #1a1a18;
+  --paper: #f2f0ea;
+  --rule: #d8d6ce;
+
+  --font-hand: 'Caveat', cursive;
+  --font-body: 'Crimson Pro', Georgia, serif;
+
+  --max-w: 680px;
+  --gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+/* ── reset ───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  font-size: 18px;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.75;
+  min-height: 100vh;
+  /* dot-grid texture */
+  background-image: radial-gradient(circle, #c8c6be 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-attachment: fixed;
+}
+
+/* ── typography ──────────────────────────────────────── */
+h1, h2, h3 {
+  font-family: var(--font-hand);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ── layout helper ───────────────────────────────────── */
+.container {
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+/* ── section spacing ─────────────────────────────────── */
+section {
+  padding-block: clamp(4rem, 10vw, 8rem);
+}
+
+/* ── horizontal rule ─────────────────────────────────── */
+.rule {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: var(--rule);
+  margin-block: 0.5rem;
+}
+
+/* ── button / bracket link ───────────────────────────── */
+.btn {
+  display: inline-block;
+  font-family: var(--font-hand);
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  padding: 0.35em 0.9em;
+  border: 1.5px solid var(--ink);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+/* ── utility ─────────────────────────────────────────── */
+.hand { font-family: var(--font-hand); }
+.soft { color: var(--ink-soft); }
+.faint { color: var(--ink-faint); }

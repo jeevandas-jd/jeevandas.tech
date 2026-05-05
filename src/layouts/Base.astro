@@ -1,0 +1,68 @@
+---
+import '../styles/global.css';
+const { title = 'Jeevandas' } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Jeevandas — just a person on the internet." />
+  <title>{title}</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+</head>
+<body>
+  <slot />
+  <script>
+    import '../scripts/tracker.js';
+  </script>
+  <script type="module">
+let isScrolling = false;
+
+const sections = [...document.querySelectorAll("section")];
+
+function getCurrentSectionIndex() {
+  let index = 0;
+  let min = Infinity;
+
+  sections.forEach((sec, i) => {
+    const top = Math.abs(sec.getBoundingClientRect().top);
+    if (top < min) {
+      min = top;
+      index = i;
+    }
+  });
+
+  return index;
+}
+
+window.addEventListener("wheel", (e) => {
+  // ignore tiny trackpad movements
+  if (Math.abs(e.deltaY) < 10) return;
+
+  if (isScrolling) return;
+
+  isScrolling = true;
+
+  const current = getCurrentSectionIndex();
+
+  let next = current;
+
+  if (e.deltaY > 0) {
+    next = Math.min(current + 1, sections.length - 1);
+  } else {
+    next = Math.max(current - 1, 0);
+  }
+
+  sections[next].scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+
+  setTimeout(() => {
+    isScrolling = false;
+  }, 700);
+});
+</script>
+</body>
+</html>

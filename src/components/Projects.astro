@@ -1,0 +1,372 @@
+---
+// Projects.astro
+const projects = [
+  {
+    id: "math-ai",
+    title: "math nerds but make it AI",
+    desc: "an AI tutor that actually explains why, not just what.",
+    tag: "ML / Python",
+    tech: {
+      summary: "A collaborative multi-agent AI system where specialized agents solve and verify mathematical problems using a round-robin AutoGen-style workflow.",
+      stack: ["Python", "AutoGen", "SymPy", "Gemini API"],
+      highlights: [
+        "Problem Solver Agent uses SymPy for symbolic computation",
+        "Verifier Agent revalidates solutions by recomputing outputs",
+        "Hybrid system combining LLM reasoning with symbolic math tools",
+      ],
+    },
+  },
+  {
+    id: "cab-share",
+    title: "uber but for broke college students",
+    desc: "split rides, split costs. built for campus life.",
+    tag: "Full-stack / Node",
+    tech: {
+      summary: "A full-stack ride-sharing platform enabling students to request and offer rides within campus, with real-time matching and status updates.",
+      stack: ["Node.js", "MongoDB", "Socket.io", "AWS S3", "AWS Lambda", "EC2", "Google OAuth"],
+      highlights: [
+        "Real-time ride matching via WebSocket server on EC2",
+        "Production-grade auth — Google OAuth, email verification, password recovery",
+        "Frontend deployed on AWS S3 with custom domain",
+        "Backend services split across Lambda (API) and EC2 (sockets)",
+      ],
+    },
+  },
+  {
+    id: "pdf-chat",
+    title: "talk to your PDFs",
+    desc: "upload a PDF, ask it anything. it answers.",
+    tag: "RAG / LLM",
+    tech: {
+      summary: "A Retrieval-Augmented Generation system that lets you query any PDF document in natural language.",
+      stack: ["Python", "LangChain", "ChromaDB", "Gemini API", "PyPDF"],
+      highlights: [
+        "Semantic chunking using LangChain's SemanticChunker",
+        "Google Generative AI embeddings stored in ChromaDB",
+        "Context-aware responses via Gemini API",
+        "CLI interface for upload and query",
+      ],
+    },
+  },
+  {
+    id: "crop-disease",
+    title: "saving farmers with a phone camera",
+    desc: "point your phone at a leaf. know if your crop is sick.",
+    tag: "CV / Mobile / Flutter",
+    tech: {
+      summary: "A multi-layer AI ecosystem for crop damage assessment and automated insurance report generation. 6th place out of 540+ teams at IBM National Hackathon 2026.",
+      stack: ["Flutter", "PyTorch", "TFLite", "Firebase", "Gemini API", "ShuffleNetV2", "ONNX"],
+      highlights: [
+        "LightCDC model (3.94 MB) — ShuffleNetV2 on 23,000 images, exported via PyTorch → ONNX → TFLite with FP16 quantization",
+        "Fully offline on-device inference — no internet needed in rural areas",
+        "Satellite microservice: accepts GPS + date range, returns before/after NDVI image pairs",
+        "Gemini API generates bilingual insurance claim narratives from structured damage data",
+        "Feature-first Flutter architecture with Provider, built by 2 devs in a 2-week sprint",
+      ],
+    },
+  },
+  {
+    id: "pi-alexa",
+    title: "alexa but it lives on a raspberry pi and doesn't snitch",
+    desc: "local voice assistant. no cloud. no data leaving your room.",
+    tag: "IoT / Edge / LLM",
+    tech: {
+      summary: "A fine-tuned Mistral 7B smart home agent running entirely on a Raspberry Pi — no cloud dependency, no data leaving the device.",
+      stack: ["Mistral 7B", "QLoRA", "Docker", "Matter Protocol", "React", "Raspberry Pi"],
+      highlights: [
+        "Fine-tuned on 481 synthetic ReAct trajectories from the SimuHome benchmark (ICLR 2026)",
+        "Achieved 7/7 on a full smart home day scenario test",
+        "Outperformed published baselines on temporal scheduling tasks by up to 50%",
+        "Three-service Docker architecture: AI agent + Matter protocol simulator + React dashboard",
+        "Designed for plug-and-play deployment on real Matter-compliant devices",
+      ],
+    },
+  },
+];
+---
+
+<section id="projects" class="dot-bg">
+  <div class="container reveal">
+    <p class="label faint hand">// things I built</p>
+    <span class="rule"></span>
+
+    <div class="project-list">
+      {projects.map((p, i) => (
+        <article class="project-card" style={`--i:${i}`}>
+          <div class="project-inner">
+            <span class="project-tag faint hand">{p.tag}</span>
+            <h3 class="project-title">{p.title}</h3>
+            <p class="project-desc soft">{p.desc}</p>
+            <button
+              class="btn project-btn"
+              data-track={`project_explore_${p.id}`}
+              data-open={p.id}
+            >
+              [ explore ]
+            </button>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- overlay -->
+<div class="modal-overlay" id="modal-overlay" aria-hidden="true"></div>
+
+<!-- modal -->
+<div class="modal" id="project-modal" role="dialog" aria-modal="true">
+  <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+  <div class="modal-inner">
+    <span class="modal-tag faint hand" id="modal-tag"></span>
+    <h2 class="modal-title hand" id="modal-title"></h2>
+    <p class="modal-summary soft" id="modal-summary"></p>
+
+    <div>
+      <p class="section-label faint hand">stack</p>
+      <div class="modal-stack" id="modal-stack"></div>
+    </div>
+
+    <div>
+      <p class="section-label faint hand">how it works</p>
+      <ul class="modal-highlights" id="modal-highlights"></ul>
+    </div>
+  </div>
+</div>
+
+<!-- data island -->
+<script type="application/json" id="projects-data">
+  {JSON.stringify(projects.map(p => ({ id: p.id, title: p.title, tag: p.tag, tech: p.tech })))}
+</script>
+
+<style>
+  .label {
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.4rem;
+  }
+
+  .project-list {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project-card {
+    padding-block: 1.8rem;
+    border-bottom: 1px solid var(--rule);
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.45s ease calc(var(--i) * 70ms),
+      transform 0.45s ease calc(var(--i) * 70ms);
+  }
+
+  .project-card.in { opacity: 1; transform: translateY(0); }
+
+  .project-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .project-tag {
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+  }
+
+  .project-title {
+    font-size: clamp(1.15rem, 2.8vw, 1.55rem);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .project-desc {
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .project-btn {
+    margin-top: 0.4rem;
+    align-self: flex-start;
+    font-size: 0.9rem;
+  }
+
+  /* ── overlay ──────────────────────────────────────── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26,26,24,0.35);
+    backdrop-filter: blur(2px);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: auto; }
+
+  /* ── modal — slides up from bottom ───────────────── */
+  .modal {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    width: min(600px, 96vw);
+    max-height: 82vh;
+    overflow-y: auto;
+    background: var(--bg);
+    border: 1.5px solid var(--ink);
+    border-bottom: none;
+    padding: 2rem 1.75rem 3rem;
+    z-index: 201;
+    transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .modal.open { transform: translateX(-50%) translateY(0); }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    color: var(--ink-faint);
+    padding: 0.2rem;
+    line-height: 1;
+    transition: color 0.15s;
+  }
+  .modal-close:hover { color: var(--ink); }
+
+  .modal-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .modal-tag {
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+  }
+
+  .modal-title {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-top: -0.5rem;
+  }
+
+  .modal-summary {
+    font-size: 0.97rem;
+    line-height: 1.85;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.65rem;
+  }
+
+  /* stack pills */
+  .modal-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  :global(.stack-pill) {
+    font-family: var(--font-hand);
+    font-size: 0.9rem;
+    border: 1px solid var(--rule);
+    padding: 0.18rem 0.7rem;
+    color: var(--ink-soft);
+    background: var(--paper);
+  }
+
+  /* highlights */
+  .modal-highlights {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  :global(.modal-highlights li) {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  :global(.modal-highlights li::before) {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--ink-faint);
+  }
+</style>
+
+<script type="module">
+  // card reveal
+  document.querySelectorAll('.project-card').forEach(card => {
+    new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) card.classList.add('in'); },
+      { threshold: 0.1 }
+    ).observe(card);
+  });
+
+  // project data
+  const projects = JSON.parse(
+    document.getElementById('projects-data').textContent
+  );
+
+  // elements
+  const overlay    = document.getElementById('modal-overlay');
+  const modal      = document.getElementById('project-modal');
+  const closeBtn   = document.getElementById('modal-close');
+  const elTag      = document.getElementById('modal-tag');
+  const elTitle    = document.getElementById('modal-title');
+  const elSummary  = document.getElementById('modal-summary');
+  const elStack    = document.getElementById('modal-stack');
+  const elList     = document.getElementById('modal-highlights');
+
+  function openModal(id) {
+    const p = projects.find(x => x.id === id);
+    if (!p) return;
+
+    elTag.textContent     = p.tag;
+    elTitle.textContent   = p.title;
+    elSummary.textContent = p.tech.summary;
+
+    elStack.innerHTML = p.tech.stack
+      .map(s => `<span class="stack-pill">${s}</span>`)
+      .join('');
+
+    elList.innerHTML = p.tech.highlights
+      .map(h => `<li>${h}</li>`)
+      .join('');
+
+    overlay.classList.add('open');
+    modal.classList.add('open');
+    modal.scrollTop = 0;
+    window._jd?.logAction('project_modal_open', { id });
+  }
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    modal.classList.remove('open');
+  }
+
+  document.querySelectorAll('[data-open]').forEach(btn => {
+    btn.addEventListener('click', () => openModal(btn.dataset.open));
+  });
+
+  overlay.addEventListener('click', closeModal);
+  closeBtn.addEventListener('click', closeModal);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>

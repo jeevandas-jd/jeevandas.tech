@@ -1,0 +1,49 @@
+---
+// About.astro
+---
+
+<section id="about">
+  <div class="container">
+    <p class="label faint hand">about</p>
+    <span class="rule"></span>
+
+    <div class="about-text">
+      <p>hi, I'm Jeevandas.</p>
+
+      <p class="soft">
+        an ordinary guy still figuring out things,<br>
+        exploring this world with a curiosity.<br>
+        currently exploring computers.<br>
+        not sure how long. staying until<br>
+        something more interesting shows up.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .label {
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .about-text {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+  }
+
+  .about-text p {
+    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+    line-height: 1.85;
+  }
+
+  .about-text p:first-child {
+    font-family: var(--font-hand);
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    color: var(--ink);
+  }
+</style>

@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Projects from '../components/Projects.astro';
+import Museum from '../components/Museum.astro';
+import LifeLately from '../components/LifeLately.astro';
+import Blog from '../components/Blog.astro';
+import End from '../components/End.astro';
+---
+
+<Base title="Jeevandas">
+  <Hero />
+
+  <main id="main">
+    <About />
+    <Projects />
+    <Museum />
+    <LifeLately />
+    <End />
+  </main>
+</Base>
+
+<style>
+  #main {
+    /* sections scroll beneath the hero */
+    position: relative;
+    z-index: 1;
+  }
+</style>

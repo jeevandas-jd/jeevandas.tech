@@ -1,0 +1,275 @@
+---
+// End.astro
+---
+
+<section id="end">
+  <div class="container">
+    <p class="sign-off hand">that's all for now</p>
+    <span class="rule"></span>
+
+    <div class="end-body">
+      <p class="soft">
+  thanks for wandering around.
+      </p>
+
+      <p class="soft">
+        I design and build things-apps,ideas and AI-systems.
+      </p>
+
+      <p class="soft">
+        if something resonated,<br>
+        or you want to build something together —
+      </p>
+
+      <button class="btn msg-btn" id="msg-btn">[ send me a message ]</button>
+
+      <div class="links">
+        <span class="faint hand">or find me here —</span>
+        <nav class="socials">
+          <a href="https://github.com/jeevandas-jd" target="_blank" rel="noopener">github</a>
+          <span class="sep">/</span>
+          <a href="https://www.linkedin.com/in/jeevandas-m-s-0151a028a/" target="_blank" rel="noopener">linkedin</a>
+          <span class="sep">/</span>
+          <a href="https://www.instagram.com/jeevandas.ms/" target="_blank" rel="noopener">instagram</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact popup -->
+<div class="overlay" id="overlay" aria-hidden="true"></div>
+<div class="popup" id="popup" role="dialog" aria-modal="true" aria-label="Send a message">
+  <button class="popup-close" id="popup-close" aria-label="Close">✕</button>
+  <p class="popup-title hand">say hi</p>
+
+  <div class="field-group">
+    <label class="field-label hand" for="msg-name">your name</label>
+    <input class="field-input" id="msg-name" type="text" placeholder="what should I call you?" autocomplete="off" />
+  </div>
+
+  <div class="field-group">
+    <label class="field-label hand" for="msg-email">email (optional)</label>
+    <input class="field-input" id="msg-email" type="email" placeholder="if you want a reply" autocomplete="off" />
+  </div>
+
+  <div class="field-group">
+    <label class="field-label hand" for="msg-body">message</label>
+    <textarea class="field-input" id="msg-body" rows="5" placeholder="whatever's on your mind..."></textarea>
+  </div>
+
+  <div class="popup-footer">
+    <button class="btn send-btn" id="send-btn">[ send it ]</button>
+    <p class="send-status hand" id="send-status"></p>
+  </div>
+</div>
+
+<style>
+  #end {
+    padding-bottom: clamp(5rem, 12vw, 10rem);
+  }
+
+  .sign-off {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  .end-body {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+  }
+
+  .end-body p {
+    font-size: clamp(1rem, 2.2vw, 1.15rem);
+    line-height: 1.9;
+  }
+
+  .msg-btn { align-self: flex-start; }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .socials {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .socials a {
+    font-size: 0.95rem;
+    text-underline-offset: 3px;
+  }
+
+  .sep { color: var(--ink-faint); }
+
+  /* ── overlay ────────────────────────────────────────── */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26,26,24,0.35);
+    backdrop-filter: blur(2px);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+
+  .overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── popup ──────────────────────────────────────────── */
+  .popup {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    width: min(540px, 96vw);
+    background: var(--bg);
+    border: 1.5px solid var(--ink);
+    border-bottom: none;
+    padding: 2rem 1.75rem 2.5rem;
+    z-index: 201;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  .popup.open {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .popup-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    color: var(--ink-faint);
+    padding: 0.25rem;
+    line-height: 1;
+  }
+
+  .popup-close:hover { color: var(--ink); }
+
+  .popup-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .field-label {
+    font-size: 0.9rem;
+    color: var(--ink-faint);
+  }
+
+  .field-input {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 300;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--rule);
+    outline: none;
+    padding: 0.4rem 0;
+    color: var(--ink);
+    width: 100%;
+    resize: none;
+    transition: border-color 0.2s;
+  }
+
+  .field-input::placeholder { color: var(--ink-faint); }
+  .field-input:focus { border-color: var(--ink); }
+
+  .popup-footer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.3rem;
+  }
+
+  .send-status {
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+</style>
+
+<script>
+  const msgBtn    = document.getElementById('msg-btn');
+  const overlay   = document.getElementById('overlay');
+  const popup     = document.getElementById('popup');
+  const closeBtn  = document.getElementById('popup-close');
+  const sendBtn   = document.getElementById('send-btn');
+  const statusEl  = document.getElementById('send-status');
+
+  function openPopup() {
+    overlay.classList.add('open');
+    popup.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.getElementById('msg-name').focus();
+  }
+
+  function closePopup() {
+    overlay.classList.remove('open');
+    popup.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+  }
+
+  msgBtn.addEventListener('click', openPopup);
+  overlay.addEventListener('click', closePopup);
+  closeBtn.addEventListener('click', closePopup);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePopup();
+  });
+
+  sendBtn.addEventListener('click', async () => {
+    const name    = document.getElementById('msg-name').value.trim();
+    const email   = document.getElementById('msg-email').value.trim();
+    const message = document.getElementById('msg-body').value.trim();
+
+    if (!name || !message) {
+      statusEl.textContent = 'name and message are required.';
+      return;
+    }
+
+    sendBtn.disabled = true;
+    statusEl.textContent = 'sending...';
+
+    try {
+      // TODO: replace with your Supabase edge function URL
+      const res = await fetch('https://jiylkkzhrnqcjfhnoqkv.supabase.co/functions/v1/message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify({ name, email, message })
+      });
+
+      if (res.ok) {
+        statusEl.textContent = '✓ message sent!';
+        setTimeout(closePopup, 1800);
+      } else {
+        statusEl.textContent = 'something went wrong. try email instead.';
+      }
+    } catch {
+      statusEl.textContent = 'something went wrong. try email instead.';
+    } finally {
+      sendBtn.disabled = false;
+    }
+  });
+</script>
