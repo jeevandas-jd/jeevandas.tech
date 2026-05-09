@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-
+import dpImage from '/jeevandas_dp.png';
 const data = {
   name: "Jeevandas M S",
   role: "AI & Full-Stack Developer",
@@ -583,16 +583,16 @@ export default function Dev() {
               }
             }}>
               <div style={{
-                width: 140, 
-                height: 140, 
-                borderRadius: "50%",
-                overflow: "hidden", 
-                border: "3px solid #e8e3dc",
-                boxShadow: "0 4px 20px rgba(28,25,22,0.08)",
-                flexShrink: 0,
-              }}>
-                <img src="jeevandas_dp.png" alt="Jeevandas M S" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }} />
-              </div>
+  width: 140, 
+  height: 140, 
+  borderRadius: "50%",
+  overflow: "hidden", 
+  border: "3px solid #e8e3dc",
+  boxShadow: "0 4px 20px rgba(28,25,22,0.08)",
+  flexShrink: 0,
+}}>
+  <img src={dpImage} alt="Jeevandas M S" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }} />
+</div>
 
               {/* stat pair */}
               <div style={{ display: "flex", gap: 8, width: "100%" }}>
