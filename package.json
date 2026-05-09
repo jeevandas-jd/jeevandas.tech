@@ -3,7 +3,8 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-        "build": "astro build && cd portfolio && npm run build && mkdir -p ../dist/dev && cp -r dist/* ../dist/dev/",
+        "build":"bash build.sh",
+        "build:astro":"astro build",
     "preview": "astro preview"
   },
   "dependencies": {

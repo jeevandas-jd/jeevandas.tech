@@ -1,7 +1,11 @@
 {
-  "buildCommand": "./build.sh",
+  "buildCommand": "bash build.sh",
   "outputDirectory": "dist",
   "rewrites": [
+    {
+      "source": "/dev",
+      "destination": "/dev/index.html"
+    },
     {
       "source": "/dev/(.*)",
       "destination": "/dev/$1"

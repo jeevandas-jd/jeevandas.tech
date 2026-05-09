@@ -1,14 +1,23 @@
 #!/bin/bash
 
-# build.sh
-echo "Building main Astro site..."
-npm run build
+echo "📦 Installing root dependencies..."
+npm install
 
-echo "Building React portfolio..."
+echo "📦 Installing portfolio dependencies..."
+cd portfolio
+npm install
+
+echo "🏗️ Building Astro site..."
+cd ..
+npm run build:astro
+
+echo "🏗️ Building React portfolio..."
 cd portfolio
 npm run build
+cd ..
 
-echo "Copying portfolio to dist/dev..."
-cp -r dist ../dist/dev
+echo "📁 Copying portfolio to dist/dev..."
+mkdir -p dist/dev
+cp -r portfolio/dist/* dist/dev/
 
-echo "Build complete!"
+echo "✅ Build complete!"
