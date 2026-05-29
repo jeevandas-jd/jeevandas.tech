@@ -1,0 +1,131 @@
+import dpImage from '../assets/images/jeevandas_dp.png';
+
+export const portfolioData = {
+  name: "Jeevandas M S",
+  role: "AI & Full-Stack Developer",
+  location: "Kochi, Kerala",
+  email: "jeevandasms2004@gmail.com",
+  phone: "+91 95622 25659",
+  links: {
+    github: "github.com/jeevandas-jd",
+    linkedin: "linkedin.com/in/jeevandas-m-s",
+    leetcode: "leetcode.com/u/jeevandas-787",
+  },
+  bio: "I build AI systems that work in the real world — on phones, on edge devices, in fields with no internet. I like hard problems and shipping things that actually run.",
+  education: {
+    school: "Cochin University of Science and Technology",
+    short: "CUSAT",
+    degree: "Integrated B.Sc. + M.Sc. — AI & Data Science",
+    gpa: "7.4",
+    years: "2023 – 2028",
+  },
+  experience: [
+    {
+      company: "Lealabs Pvt. Ltd.",
+      role: "AI Intern",
+      period: "May – Jul 2025",
+      points: [
+        "Built RAG pipelines for PDF-based Q&A using LangChain, Gemini API, ChromaDB",
+        "Full document pipeline: extraction → chunking → embeddings → vector storage → retrieval",
+        "Multi-agent workflows via AutoGen for document analysis and summarization",
+        "Deployed services on PythonAnywhere; maintained modular pipelines via Git",
+      ],
+    },
+  ],
+  projects: [
+    {
+      id: "agro",
+      name: "Agro Sentinel",
+      badge: "6th / 540+ · IBM Hackathon 2026",
+      type: "CV · Mobile · Edge AI",
+      one: "AI crop damage assessment & offline insurance automation for Kerala farmers.",
+      stack: ["Flutter", "PyTorch", "TFLite", "Firebase", "Gemini API", "ShuffleNetV2"],
+      points: [
+        "LightCDC model (3.94 MB) — ShuffleNetV2 on 23k images via PyTorch → ONNX → TFLite FP16",
+        "Fully offline on-device inference in Flutter — no internet needed in rural areas",
+        "Satellite microservice: GPS + date range → georeferenced before/after NDVI pairs",
+        "Gemini API converts structured damage data into bilingual insurance claim narratives",
+        "Feature-first Flutter + Provider, 2 devs, 2-week sprint",
+      ],
+      featured: true,
+    },
+    {
+      id: "smart-home",
+      name: "On-Device Smart Home Agent",
+      badge: "Edge AI · IoT",
+      type: "LLM · Edge · Docker",
+      one: "Fine-tuned Mistral 7B running fully offline on Raspberry Pi with Matter protocol.",
+      stack: ["Mistral 7B", "QLoRA", "Docker", "Matter Protocol", "React"],
+      points: [
+        "Fine-tuned on 481 synthetic ReAct trajectories from SimuHome (ICLR 2026)",
+        "7/7 on full smart home day scenario; 50% better than baselines on temporal scheduling",
+        "Three-service Docker setup: AI agent + Matter simulator + React dashboard",
+      ],
+      featured: false,
+    },
+    {
+      id: "math",
+      name: "Smart Math Tutor",
+      badge: "Multi-Agent AI",
+      type: "Python · AutoGen · LLM",
+      one: "Collaborative agents that solve and verify mathematical problems in a round-robin loop.",
+      stack: ["Python", "AutoGen", "SymPy", "Gemini API"],
+      points: [
+        "Solver Agent (SymPy) + Verifier Agent in AutoGen round-robin workflow",
+        "Hybrid: LLM reasoning layered on deterministic symbolic computation",
+      ],
+      featured: false,
+    },
+    {
+      id: "camprider",
+      name: "Camprider",
+      badge: "Full-Stack",
+      type: "Node.js · MongoDB · AWS",
+      one: "Campus ride-sharing platform with real-time matching and production-grade auth.",
+      stack: ["Node.js", "MongoDB", "Socket.io", "AWS S3", "Lambda", "EC2"],
+      points: [
+        "Google OAuth, email verification, password recovery",
+        "Real-time matching via WebSocket on EC2; API on Lambda",
+        "Frontend on S3 + CloudFront with custom domain",
+      ],
+      featured: false,
+    },
+    {
+      id: "rag",
+      name: "RAG PDF Chatbot",
+      badge: "LLM · RAG",
+      type: "Python · LangChain · ChromaDB",
+      one: "Natural language querying over any PDF via Retrieval-Augmented Generation.",
+      stack: ["Python", "LangChain", "ChromaDB", "Gemini API", "PyPDF"],
+      points: [
+        "Semantic chunking + Google embeddings stored in ChromaDB",
+        "Context-aware responses via Gemini API through CLI interface",
+      ],
+      featured: false,
+    },
+    {
+      id: "pipt",
+      name: "PIPT — Parallel Image Toolkit",
+      badge: "Systems",
+      type: "C++ · OpenMP",
+      one: "High-performance image processing using OpenMP parallelism on CPU.",
+      stack: ["C++", "OpenMP"],
+      points: [
+        "Grayscale, box blur, Sobel edge detection via row-wise domain decomposition",
+        "4–5× speedup for convolution kernels across 1–16 threads on Ryzen 5",
+      ],
+      featured: false,
+    },
+  ],
+  skills: {
+    "Languages": ["Python", "C++", "Java", "C", "Dart"],
+    "AI / ML": ["PyTorch", "TensorFlow", "scikit-learn", "TFLite", "Hugging Face", "LangChain", "RAG"],
+    "Mobile": ["Flutter", "Firebase", "Provider"],
+    "Agentic": ["AutoGen", "Multi-Agent Systems", "ChromaDB", "Prompt Engineering"],
+    "Web / API": ["Django", "Node.js", "React", "REST APIs", "DRF"],
+    "Cloud": ["AWS Lambda", "EC2", "S3", "CloudFront", "Google Cloud", "IBM watsonx"],
+    "Tools": ["Git", "Docker", "OpenMP", "Pandas", "NumPy", "SymPy"],
+  },
+};
+
+export default portfolioData;
