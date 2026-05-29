@@ -36,7 +36,7 @@ export function LeetCodeHeatmap({ username }) {
   const maxSubmissions = Math.max(...Object.values(submissionMap).map(Number), 1);
 
   const currentYear = new Date().getFullYear();
-  const availableYears = ['rolling', currentYear , currentYear - 1, currentYear-2].filter(
+  const availableYears = ['rolling', currentYear - 2, currentYear - 1, currentYear].filter(
     y => y === 'rolling' || y >= 2023
   );
 

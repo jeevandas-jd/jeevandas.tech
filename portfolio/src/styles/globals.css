@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&family=Caveat:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&family=Caveat:wght@400;500;600;700&display=swap');
 
 * {
   box-sizing: border-box;
@@ -8,68 +8,116 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-a:hover {
-  opacity: 0.75;
+body {
+  background: #faf8f5;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  color: #1c1916;
+  line-height: 1.5;
 }
 
-/* Responsive styles */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* Smooth hover transitions */
+a, button {
+  transition: all 0.2s ease;
+}
+
+/* Container for better readability */
+@media (min-width: 1024px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+/* Mobile optimizations */
 @media (max-width: 768px) {
-  .desktop-nav {
-    display: none !important;
+  html {
+    font-size: 14px;
   }
   
-  .mobile-menu-btn {
-    display: block !important;
+  body {
+    -webkit-tap-highlight-color: transparent;
   }
   
-  #about > div,
-  #experience > div > div,
-  #skills > div > div > div,
-  #education > div > div > div {
-    grid-template-columns: 1fr !important;
-    gap: 0.75rem !important;
-  }
-  
-  #experience > div > div > div > div:first-child {
-    position: relative !important;
-    top: 0 !important;
-    margin-bottom: 8px !important;
-  }
-  
-  #education > div > div > div > div:last-child {
-    text-align: left !important;
-  }
-  
-  .hero-stats {
-    order: -1 !important;
+  /* Better touch targets */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
   }
 }
 
-@media (min-width: 769px) {
-  .mobile-nav {
-    display: none !important;
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e8e3dc;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b5622a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8a4a1c;
+}
+
+/* Animation keyframes */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
   }
-  
-  .mobile-menu-btn {
-    display: none !important;
+  50% {
+    opacity: 0.3;
+    transform: scale(0.65);
   }
 }
 
-/* LeetCode Heatmap Responsive */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Utility classes */
+.text-accent {
+  color: #b5622a;
+}
+
+.bg-accent {
+  background: #b5622a;
+}
+
+/* Responsive images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Better form elements on mobile */
 @media (max-width: 768px) {
-  .leetcode-heatmap {
-    overflow-x: scroll;
-  }
-  
-  .leetcode-heatmap .cell {
-    width: 8px !important;
-    height: 8px !important;
-  }
-  
-  .leetcode-heatmap .weekday-labels,
-  .leetcode-heatmap .month-labels {
-    font-size: 0.6rem !important;
+  input, button, select, textarea {
+    font-size: 16px !important; /* Prevents zoom on focus in iOS */
   }
 }

@@ -8,6 +8,7 @@ import { Education } from '../components/education/Education';
 import { Footer } from '../components/footer/Footer';
 import { LeetCodeHeatmap } from '../components/leetcode/LeetcodeHeatmap';
 import { portfolioData } from '../data/portfolioData';
+import { ResponsiveContainer } from '../components/common/ResponsiveContainer';
 
 export function Portfolio() {
   const sections = ["about", "experience", "projects", "skills", "education", "leetcode"];
@@ -16,7 +17,7 @@ export function Portfolio() {
   return (
     <div style={{ background: "#faf8f5", minHeight: "100vh" }}>
       <Navbar active={active} items={sections} />
-      <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 2rem" }}>
+      <ResponsiveContainer maxWidth={860}>
         <Hero data={portfolioData} />
         <Experience experience={portfolioData.experience} />
         <Projects projects={portfolioData.projects} />
@@ -30,8 +31,8 @@ export function Portfolio() {
             gridTemplateColumns: "140px 1fr",
             gap: "2rem",
             alignItems: "start",
-          }}>
-            <div style={{ paddingTop: 4, position: "sticky", top: 80 }}>
+          }} className="leetcode-grid">
+            <div style={{ paddingTop: 4, position: "sticky", top: 80 }} className="leetcode-label">
               <p style={{
                 fontFamily: "'Caveat', cursive",
                 fontSize: 15,
@@ -48,7 +49,21 @@ export function Portfolio() {
         </section>
         
         <Footer data={portfolioData} />
-      </div>
+      </ResponsiveContainer>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .leetcode-grid {
+            grid-template-columns: 1fr !important;
+            gap: 0.75rem !important;
+          }
+          .leetcode-label {
+            position: relative !important;
+            top: 0 !important;
+            margin-bottom: 0.5rem !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
