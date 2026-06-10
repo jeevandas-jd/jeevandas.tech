@@ -1,7 +1,7 @@
 // src/scripts/tracker.js
 const ENDPOINT = 'https://jiylkkzhrnqcjfhnoqkv.supabase.co/functions/v1/track';
 
-console.log("Tracker loaded 🚀");
+
 
 // ── fingerprint ───────────────────────────────────────────
 function getFingerprint() {

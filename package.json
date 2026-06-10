@@ -2,11 +2,14 @@
   "name": "jeevandas-portfolio",
   "type": "module",
   "version": "0.0.1",
+
   "scripts": {
-        "build":"bash build.sh",
-        "build:astro":"astro build",
+    "dev": "astro dev",
+    "build": "bash build.sh",
+    "build:astro": "astro build",
     "preview": "astro preview"
   },
+
   "dependencies": {
     "astro": "^4.8.0"
   }
