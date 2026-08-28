@@ -1,7 +1,18 @@
 {
   "buildCommand": "bash build.sh",
   "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/survey-form",
+      "destination": "/survey-form/",
+      "permanent": false
+    }
+  ],
   "rewrites": [
+    {
+      "source": "/survey-form/:path*",
+      "destination": "https://relai-survay-form.vercel.app/:path*"
+    },
     {
       "source": "/dev",
       "destination": "/dev/index.html"
@@ -9,10 +20,6 @@
     {
       "source": "/dev/(.*)",
       "destination": "/dev/$1"
-    },
-    {
-      "source": "/survey-form/:path*",
-      "destination": "https://relai-survay-form.vercel.app/:path*"
     }
   ]
 }
